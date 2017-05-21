@@ -1,0 +1,13 @@
+#contentItem{
+	position: absolute;
+	left: 200px;
+	top:60px;
+	/*background: red;*/
+}
+#contentItem .contentItem-item{
+	width: 1100px;
+	height: 700px;
+}
+#leftContent{
+	float: left;
+}
