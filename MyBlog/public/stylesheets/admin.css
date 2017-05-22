@@ -1,6 +1,6 @@
 #contentItem{
 	position: absolute;
-	left: 200px;
+	left: 350px;
 	top:60px;
 	/*background: red;*/
 }
@@ -10,4 +10,7 @@
 }
 #leftContent{
 	float: left;
+}
+#usersList th,#usersList th td{
+	text-align: center;
 }

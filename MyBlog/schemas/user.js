@@ -1,20 +1,12 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
-var blogSchema = new Schema({
-	title: String,
-	author: String,
-	body: String,
-	comments: [{ body: String, date: Date}],
-	date: { type: Date, default: Date.now},
-	hidden: Boolean,
-	meta: {
-		votes: Number,
-		favs: Number
-	}
-});
-
+//用户表结构
 module.exports = new mongoose.Schema({
 	username: String,
-	password: String
+	password: String,
+
+	isAdmin:{
+		type:Boolean,
+		default:false
+	}
+
 });

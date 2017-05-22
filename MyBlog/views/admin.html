@@ -1,49 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <title>后台管理</title>
-  <link rel="stylesheet" href="/layui/css/layui.css">
-  <link rel="stylesheet" href="/stylesheets/style.css">
-  <link rel="stylesheet" href="/stylesheets/public.css">
-  <link rel="stylesheet" href="/stylesheets/admin.css">
-  <script src="/jquery-3.1.1.min.js"></script>
-  <script src="/javascripts/publiclayer.js"></script>
-  <script src="/javascripts/admin.js"></script>
-</head>
-<body>
- 
- 
-<ul class="layui-nav" style="border-radius: 0" id="topNav">
-  <li class="layui-nav-item"><h1 style="font-size: 30px">后台管理系统</h1></li>
-  <li style="float: right;height: 60px;line-height: 94px;"><span style="margin-right: 10px">你好</span>{{adminName}}<span style="margin: 5px;">|</span><a href="javascript:;">退出</a></li>
-</ul>
- 
- <div id="leftContent">
-   <ul class="layui-nav layui-nav-tree" lay-filter="indexNav" style="border-radius: 0;background: rgb(73, 76, 85);color: #000;text-align: center;" id="leftNav">
-  <li class="layui-nav-item layui-nav-itemed">
-      <dl class="layui-nav-child">
-          <dd data-item='one'><a href="javascript:;">首页</a></dd>
-          <dd data-item='two'><a href="javascript:;">设置</a></dd>
-          <dd data-item='three'><a href="javascript:;">用户管理</a></dd>
-          <dd data-item='four'><a href="javascript:;">分类管理</a></dd>
-          <dd data-item='five'><a href="javascript:;">文章管理</a></dd>
-          <dd data-item='six'><a href="javascript:;">评论管理</a></dd>
-      </dl>
-  </li>
-</ul>
- </div>
+{% extends 'layout.html'%}
 
-<div id="contentItem">
-    <div class="contentItem-item">内容1</div>
-    <div class="contentItem-item" style="display: none">内容2</div>
-    <div class="contentItem-item" style="display: none">内容3</div>
-    <div class="contentItem-item" style="display: none">内容4</div>
-    <div class="contentItem-item" style="display: none">内容5</div>
-    <div class="contentItem-item" style="display: none">内容6</div>
-</div>
-    
-<script src="/layui/layui.js"></script>
-</body>
-</html>
+{% block main %}
+ddddddddddddddddddddd
+
+{% endblock %}

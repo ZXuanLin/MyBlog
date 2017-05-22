@@ -2,11 +2,11 @@ body{
 	background: #eee;
 }
 #loginShow{
-	display: none;
+	/*display: none;*/
 }
 #regShow,#loginShow{
 	height: 60px;
-	width: 200px;
+	/*width: 200px;*/
 	float: right;
 	line-height: 60px;
 	
@@ -21,7 +21,7 @@ body{
 
 }
 #loginShow li span{
-	color:blue;
+	color:#fefcfd;
 	margin-left: 5px;
 }
 #regShow li{
@@ -271,3 +271,7 @@ body{
 	padding-left: 20px;
 	padding-top: 10px;
 }
+#leftNav{
+	height: 710px
+}
+

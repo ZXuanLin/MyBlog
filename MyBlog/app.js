@@ -3,8 +3,10 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var Cookies = require('cookies');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/test',function(err){
 	if(err){
 		console.log('连接失败');
@@ -34,9 +36,25 @@ app.set('view engine', 'html'); //1，固定参数，2，解析文件的后缀�
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(function(req,res,next){
+  req.cookies = new Cookies(req,res);
+  console.log(req.cookies.get('userInfo'));
+  if(req.cookies.get('userInfo')){
+    try{
+      req.userInfo = JSON.parse(req.cookies.get('userInfo'));
+      User.findById(req.userInfo._id).then(function(userInfo){
+        console.log(userInfo);
+        req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
+        next();
+      })
+    }catch(e){
+      next();
+    }
+  }
+  
+})
 //静态文件
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'lib')));
