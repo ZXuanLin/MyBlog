@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+
+<h3 style="text-align: center;font-size: 30px;margin-top: 30px;margin-bottom: 20px;">文章管理    <small>>添加文章</small></h3>
+
+<form method="post">
+
+    <span>标题</span>
+    <input type="text" name="title" style="height: 30px;margin-top: 10px;width: 290px"/>
+    <span>分类</span>
+    <select name="category" style="width: 100px">
+        {% for category in categories %}
+        <option value="{{category._id.toString()}}">{{category.name}}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" style="height: 30px;width: 60px">提交</button><br>
+    <span style="line-height: 30px;display: inline-block;width: 100%;text-align: left;">内容摘要</span>
+    <textarea id="description" cols="150" rows="3" placeholder="请输入简介" name="description">
+
+    </textarea>
+    <br>
+    <span style="line-height: 30px;display: inline-block;width: 100%;text-align: left;">文章正文</span><br>
+    <textarea id="article-content" cols="150" rows="22" style="overflow-y: scroll;overflow-x:hidden" name="content">
+
+    </textarea>
+
+</form>
+
+{% endblock %}

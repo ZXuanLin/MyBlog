@@ -1,5 +1,6 @@
 var express = require('express');
 var User = require('../models/User');
+var Category = require('../models/Categories');
 var router = express.Router();
 var responseData = null;
 
@@ -52,7 +53,7 @@ router.post('/user/register',function(req,res,next){
 			return user.save();
 		}
 	}).then(function(newUserInfo){
-		console.log(newUserInfo);
+		// console.log(newUserInfo);
 		responseData.message = '注册成功';
 		res.json(responseData);
 	})
@@ -85,7 +86,7 @@ router.post('/user/login',function(req,res,next){
 			var loginUserInfo = JSON.stringify({_id:userInfo._id,username:userInfo.username,isAdmin:userInfo.isAdmin})
 			req.cookies.set('userInfo',loginUserInfo)
 			res.json(responseData);
-			console.log(req.cookies);
+			// console.log(req.cookies);
 			return;
 		}
 	})
@@ -102,5 +103,48 @@ router.get('/user/logout',function(req,res){
 	res.json(responseData);
 	return;
 })
+
+router.post('/category/add',function(req,res,next){
+
+	var name = req.body.name || '';
+
+	if(name === ''){
+		res.render('addError',{
+			userInfo:req.userInfo
+		})
+	}
+})
+
+
+// 评论提交
+router.post('/comment/post',function(req,res,next){
+    // 文章的id是需要前端提交的。
+    var contentId=req.body.contentId||'';
+    var postData={
+        username:req.userInfo.username,
+        postTime: new ConvertDate().getDate(),
+        content: req.body.content
+    };
+
+    // 查询当前内容信息
+    Content.findOne({
+        _id:contentId
+    }).then(function(content){
+        content.comments.push(postData);
+        return content.save()
+    }).then(function(newContent){//最新的内容在newContent！
+        responseData.message='评论成功！';
+        res.json(responseData);
+    })
+
+});
+
+
+
+
+
+
+
+
 
 module.exports = router;

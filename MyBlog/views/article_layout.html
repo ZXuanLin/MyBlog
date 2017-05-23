@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>主页</title>
+  <link rel="stylesheet" href="/layui/css/layui.css">
+  <link rel="stylesheet" href="/stylesheets/style.css">
+  <link rel="stylesheet" href="/stylesheets/public.css">
+  <link rel="stylesheet" href="calendar/css/calendar.css">
+  <script src="/jquery-3.1.1.min.js"></script>
+  <script src="javascripts/publiclayer.js"></script>
+  <script src="javascripts/index.js"></script>
+</head>
+<body>
+<ul class="layui-nav" style="border-bottom: 1px solid red;">
+  
+  {% if category == '' %}
+
+  <li class="layui-nav-item"><a style="border-left: 6px solid #522a5c;" href="/article">全部文章</a></li>
+  {% else %}
+  <li class="layui-nav-item"><a href="/article" class="layui-nav-item">全部文章</a></li>
+  {% endif %}
+  {% for _category in categories %}
+  {% if category.toString()==_category._id.toString() %}
+
+<li class="layui-nav-item"><a style="border-left: 6px solid #522a5c;" href="/article?category={{_category._id.toString()}}">{{_category.name}}</a></li>
+{% else %}
+
+<li class="layui-nav-item"><a href="/article?category={{_category._id.toString()}}">{{_category.name}}</a></li>
+
+{% endif %}
+{% endfor %}
+
+
+
+  {% if userInfo._id %}
+  <div id="loginShow">
+    <li><a href="javascript:;" class="out">注销</a></li>
+    {% if userInfo.isAdmin %}
+
+    <li>管理员<span style="margin-left: 5px;margin-right: 5px">{{userInfo.username}}</span>你好，<span id="loginAdmin"><a href="/admin">进入管理</a></span>
+    </li>
+
+    {% else %}
+
+    <li>{{userInfo.username}}</li>
+    {% endif %}
+  </div>
+  
+  {% else %}
+  <div id="regShow">
+    <li><a href="javascript:;" class="reg">注册</a></li>
+    <li><a href="javascript:;" class="login">登陆</a></li>
+  </div>
+  {% endif %}
+</ul>
+<!-- <div id="personNav">
+    <div id="personFace"></div>
+</div> -->
+ 
+<div id="pageContent">
+  <div id="bookContent">
+  <!-- 文章卡片 -->
+    <div id="articleTopContent">
+      <div class="articleTitle">
+          <h1>{{content.title}}</h1>
+          <span>阅读(<em>{{content.views}}</em>)</span>
+      </div>
+      <div class="articleAutorPut">
+        {{userInfo.username}}推送于{{content.date}}
+      </div>
+      <div class="articleabout">
+        <p>{{content.description}}</p>
+      </div>
+    </div>
+
+    <div id="articleContent">
+      {{content.content}}
+    </div>
+    <!-- 底部分页 -->
+    <!-- <div id="footerPage"><div id="demo4"></div></div> -->
+
+
+    <div id="footerTalkContent">
+        <div class="talkinner">
+            <div class="talkinnerTop">
+              <div class="talkTitle">评论共<span>0</span>条</div>
+              <div id="textareaTalk">
+              <textarea name="" id="" cols="30" rows="10"></textarea>
+              </div>
+              <div class="talkLogin">你还没有登陆，<a href="javascript:;">点击登录</a></div>
+            </div>
+            <!-- 评论内容 -->
+            <div id="talkInnerBottom">
+              <div class="talkAuthor"><span>admin</span><span>2017年1月6日</span></div>
+              <div class="employTalk">产生不稳定影响的下岗问题？ 　　“我们必须做到产能要去，但大量职工的饭碗不能丢，而且争取让他们端上新饭碗。我们要做到的是‘双赢’，在去产能、促发展、稳就业之间达到一个平衡。”总理回答。 　　事实上，“煤亮子”们的“双创”故事正是最好的例证。 　　梁芮铭的团队如今扩大至13人，全都是一线矿工。他们开发的电子系统已被多家煤矿采用。梁芮铭注册成立了一家名为“山西秀才科技有限公司”的企业。之所以取这个名字，他说，“因为没人再喊我‘下煤窑’的了，现在大家都喊我梁秀才”！</div>
+            </div>
+            
+        </div>
+
+    </div>
+
+<div style="height: 200px;"></div>
+  </div>
+  
+  <!-- 右侧导航 -->
+  <div id="rightContent">
+      <div class="rightSearch">
+        <form action="" class="layui-form" id="formSearch">
+            <div class="layui-form-item">
+              <i class="layui-icon" style="font-size: 20px;" id="righticon">&#xe615;</i>
+                <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="搜一下又不会怀孕" class="layui-input" id="searchInput">
+              </div>
+              <button class="layui-btn">搜索</button>
+        </form>
+      </div>
+
+      <!-- 日期选择器 -->
+      <div class="rightTime"><div id="calendar" class="calendar"></div></div>
+
+
+      <div class="rightNav">
+          <ul class="layui-nav layui-nav-tree" lay-filter="demo">
+
+  {% for _category in categories %}
+  {% if category.toString()==_category._id.toString() %}
+
+<li class="layui-nav-item"><a style="border-left: 6px solid #522a5c; color:#000" href="/article?category={{_category._id.toString()}}">{{_category.name}}</a></li>
+{% else %}
+
+<li class="layui-nav-item"><a href="/article?category={{_category._id.toString()}}" style="color:#000">{{_category.name}}</a></li>
+
+{% endif %}
+{% endfor %}
+          </ul>
+      </div>
+  </div>
+
+</div>
+  
+
+<script src="/layui/layui.js"></script>
+<script src="calendar/js/calendar.js"></script>
+
+<script>
+  
+// 评论提交
+    $('#messageComment').click(function(){
+        $.ajax({
+            type:'POST',
+            url:'/api/comment/post',
+            data:{
+                contentId:$('#contentId').val(),
+                content:$('#commentValue').val(),
+            },
+            success:function(responseData){
+                console.log(responseData);
+                alert(responseData.message);
+                var arr= responseData.data.comments;
+                //console.log(renderComment(arr));
+                $('.comments').html(renderComment(arr));
+            }
+        });
+        return false;
+
+    });
+</script>
+</body>
+</html>

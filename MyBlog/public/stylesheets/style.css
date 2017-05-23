@@ -169,6 +169,11 @@ body{
 	width: 824px;
 	height: 55px;
 	position: relative;
+	/*display: flex;*/
+	text-align: center;
+}
+#footerPage li{
+	float: left;
 }
 #demo4{
 	position: absolute;

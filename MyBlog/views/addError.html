@@ -1,0 +1,7 @@
+{% extends 'layout.html' %}}
+
+{% block main %}
+<h3 style="font-size: 30px;margin-top: 30px;">出错了</h3>
+<h4 style="margin-top: 10px;margin-bottom: 10px;">{{message}}</h4>
+<a href={{operation.url}} class="layui-btn layui-btn-primary">{{operation.operation}}</a>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block main %}
+
+<h3 style="text-align: center;font-size: 30px;margin-top: 30px;margin-bottom: 20px;">文章管理 </h3>
+<a href="content/add" class="layui-btn layui-btn-primary">添加新的文章！</a>
+
+<table class="layui-table" lay-skin="line">
+  <colgroup>
+    <col width="200">
+    <col width="200">
+    <col width="200">
+    <col width="200">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>标题/作者/阅读量</th>
+      <th>所属分类</th>
+      <th>发布时间</th>
+      <th>操作</th>
+    </tr> 
+  </thead>
+   <tbody>
+    {% for content in data %}
+
+    <tr>
+        <td style="text-align: left;">{{content.title}}/{{content.user.username}}/{{content.views}}</td>
+        <td style="text-align: left;">{{content.category.name}}</td>
+        <td style="text-align: left;">
+            {{content.date}}
+        </td>
+        <td style="text-align: left;">
+            <a href="/admin/content/edit?id={{content._id.toString()}}">修改 </a>
+            |<a href="/admin/content/delete?id={{content._id.toString()}}"> 删除</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{% include 'page.html'%}
+
+{% endblock %}

@@ -14,3 +14,13 @@
 #usersList th,#usersList th td{
 	text-align: center;
 }
+
+.pageBtn{
+	display: block;
+    background: rgba(33, 150, 243, 0.76);
+    height: 30px;
+    line-height: 30px;
+    width: 70px;
+    text-align: center;
+    color:#fff;
+}

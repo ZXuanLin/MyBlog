@@ -14,14 +14,29 @@
 </head>
 <body>
 <ul class="layui-nav" style="border-bottom: 1px solid red;">
-  <li class="layui-nav-item" ><a href="">NodeJs</a></li>
-  <li class="layui-nav-item"><a href="">CSS</a></li>
-  <li class="layui-nav-item"><a href="">JavaScript</a></li>
-  <li class="layui-nav-item"><a href="">HTML</a></li>
-  <li class="layui-nav-item"><a href="">全部文章</a></li>
+  
+  {% if category == '' %}
+
+  <li class="layui-nav-item"><a style="border-left: 6px solid #522a5c;" href="/article">全部文章</a></li>
+  {% else %}
+  <li class="layui-nav-item"><a href="/article" class="layui-nav-item">全部文章</a></li>
+  {% endif %}
+  {% for _category in categories %}
+  {% if category.toString()==_category._id.toString() %}
+
+<li class="layui-nav-item"><a style="border-left: 6px solid #522a5c;" href="/article?category={{_category._id.toString()}}">{{_category.name}}</a></li>
+{% else %}
+
+<li class="layui-nav-item"><a href="/article?category={{_category._id.toString()}}">{{_category.name}}</a></li>
+
+{% endif %}
+{% endfor %}
+
+
+
   {% if userInfo._id %}
   <div id="loginShow">
-    <li><a href="javascript:;" class="out">退出</a></li>
+    <li><a href="javascript:;" class="out">注销</a></li>
     {% if userInfo.isAdmin %}
 
     <li>管理员<span style="margin-left: 5px;margin-right: 5px">{{userInfo.username}}</span>你好，<span id="loginAdmin"><a href="/admin">进入管理</a></span>
@@ -46,56 +61,49 @@
  
 <div id="pageContent">
   <div id="bookContent">
-  <!-- 文章卡片 -->
+
+  {% for content in contents %}
+  
+  <a href="/view?contentid={{content.id}}">
     <div class="bookDetailContent">
         <div class="detailLeft">
-            <div class="detailDate">5.20</div>
-            <div class="detailTitle">Javascript</div>
+            <div class="detailDate">{{content.date}}</div>
+            <div class="detailTitle">{{content.category.name}}</div>
         </div>
 
-        <div id="bookTitle"><h1>深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解深入理解深入理解深入理解深入理解</h1></div>
-        <div id="bookAuthor">bookAuthor</div>
-        <div id="book"><p>遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！</p></div>
-      <div id="bookFooter">推送于2017年5月21号13：01：20</div>
+        <div id="bookTitle"><h1>{{content.title}}</h1></div>
+        <div id="bookAuthor">{{content.user.username}}</div>
+        <div id="book"><p>{{content.content}}</p></div>
+      <div id="bookFooter">文章推送于{{content.date}}</div>
     </div>
 
-    <div class="bookDetailContent">
-        <div class="detailLeft">
-            <div class="detailDate">5.20</div>
-            <div class="detailTitle">Javascript</div>
-        </div>
+  </a>
+  
+  
+  
 
-        <div id="bookTitle"><h1>深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解深入理解深入理解深入理解深入理解</h1></div>
-        <div id="bookAuthor">bookAuthor</div>
-        <div id="book"><p>遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！</p></div>
-      <div id="bookFooter">推送于2017年5月21号13：01：20</div>
+  {% endfor %}
+    <!-- 底部分页 <div id="demo4"></div>-->
+    <div id="footerPage">
+
+{% if pages>0 %}
+ <li><a href="/article?category={{category.toString()}}&page=1">第一页</a></li>
+   {% if page-1!==0 %}
+  <li><a href="/article?category={{category.toString()}}&page={{page-1}}">上一页</a></li>
+  {%endif%}
+
+  <li style="background:rgb(166,96,183);"><a style="color:#fff;"  href="javascript:;">{{page}}/{{pages}}</a></li>
+{% if page+1<=pages %}
+<li><a href="/article?category={{category.toString()}}&page={{page+1}}">下一页</a></li>
+{% endif %}
+<li><a href="/article?category={{category.toString()}}&page={{pages}}">最后页</a></li>
+{% else %}
+<li style="width: 100%;text-align: center;">当前分类没有任何文章！</li>
+{% endif %}
+
+
+
     </div>
-
-    <div class="bookDetailContent">
-        <div class="detailLeft">
-            <div class="detailDate">5.20</div>
-            <div class="detailTitle">Javascript</div>
-        </div>
-
-        <div id="bookTitle"><h1>深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解深入理解深入理解深入理解深入理解</h1></div>
-        <div id="bookAuthor">bookAuthor</div>
-        <div id="book"><p>遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！</p></div>
-      <div id="bookFooter">推送于2017年5月21号13：01：20</div>
-    </div>
-
-    <div class="bookDetailContent">
-        <div class="detailLeft">
-            <div class="detailDate">5.20</div>
-            <div class="detailTitle">Javascript</div>
-        </div>
-
-        <div id="bookTitle"><h1>深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解JAVASCRIPT深入理解深入理解深入理解深入理解深入理解</h1></div>
-        <div id="bookAuthor">bookAuthor</div>
-        <div id="book"><p>遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！遇到很多新手，都会问，如果要学习web前端开发，需要学习什么？难不难？多久能入门？怎么能快速建一个网站？工资能拿到多少？还有些让我推荐一些培训机构什么的要去学习。我建议是自学，实在是觉得自己没有这个能力，确实是需要一个老师的话，那你还是自己做主找个老师吧！</p></div>
-      <div id="bookFooter">推送于2017年5月21号13：01：20</div>
-    </div>
-    <!-- 底部分页 -->
-    <div id="footerPage"><div id="demo4"></div></div>
   </div>
   
   <!-- 右侧导航 -->
@@ -113,18 +121,20 @@
       <!-- 日期选择器 -->
       <div class="rightTime"><div id="calendar" class="calendar"></div></div>
 
-
+<!-- 右侧导航栏 -->
       <div class="rightNav">
           <ul class="layui-nav layui-nav-tree" lay-filter="demo">
-            <li class="layui-nav-item layui-nav-itemed">
-              <dl class="layui-nav-child">
-                <dd style="border-bottom: 1px solid #eee;"><a href="javascript:;" style="color:#000;">NodeJs</a></dd>
-                <dd style="border-bottom: 1px solid #eee;"><a href="javascript:;" style="color:#000;">CSS</a></dd>
-                <dd style="border-bottom: 1px solid #eee;"><a href="javascript:;" style="color:#000;">JavaScript</a></dd>
-                <dd style="border-bottom: 1px solid #eee;"><a href="javascript:;" style="color:#000;">HTML</a></dd>
-                <dd style="border-bottom: 1px solid #eee;"><a href="javascript:;" style="color:#000;">全部文章</a></dd>
-              </dl>
-            </li>
+
+  {% for _category in categories %}
+  {% if category.toString()==_category._id.toString() %}
+
+<li class="layui-nav-item"><a style="border-left: 6px solid #522a5c; color:#000" href="/article?category={{_category._id.toString()}}">{{_category.name}}</a></li>
+{% else %}
+
+<li class="layui-nav-item"><a href="/article?category={{_category._id.toString()}}" style="color:#000">{{_category.name}}</a></li>
+
+{% endif %}
+{% endfor %}
           </ul>
       </div>
   </div>
@@ -135,15 +145,15 @@
 <script src="/layui/layui.js"></script>
 <script src="calendar/js/calendar.js"></script>
 <script>
-    layui.use(['laypage','layer'],function(){
-      var laypage = layui.laypage,layer = layui.layer;
-          laypage({
-            cont: 'demo4'
-            ,pages: 100
-            ,first: false
-            ,last: false
-        });
-})
+//     layui.use(['laypage','layer'],function(){
+//       var laypage = layui.laypage,layer = layui.layer;
+//           laypage({
+//             cont: 'demo4'
+//             ,pages: 100
+//             ,first: false
+//             ,last: false
+//         });
+// })
 </script>
 </body>
 </html>
