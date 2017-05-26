@@ -35,13 +35,18 @@ swig.setDefaults({cache:false})
 app.engine('html',swig.renderFile); //1，解析文件的后缀名，2，解析文件名使用的方法
 app.set('views', path.join(__dirname, 'views')); //1，固定参数，2，文件存放的路径
 app.set('view engine', 'html'); //1，固定参数，2，解析文件的后缀名
+
 app.use(function(req,res,next){
   req.cookies=new Cookies(req,res);
   if(req.cookies.get('userInfo')){
         try {
             req.userInfo=JSON.parse(req.cookies.get('userInfo'));
             User.findById(req.userInfo._id).then(function(Info){
-              req.userInfo.isAdmin = Boolean(Info.isAdmin)
+              if(Info){
+                req.userInfo['isAdmin'] = Boolean(Info.isAdmin)
+              }
+              //
+              // console.log(Info,'oooooooooooooo');
               next();
             })
         }catch(e){

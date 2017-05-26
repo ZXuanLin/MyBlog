@@ -6,7 +6,6 @@ var Content=require('../models/Content');
 router.get('/', function(req, res, next) {
 	//第一个参数是文件名，第二个参数是传递到页面的值
   Category.find().sort({_id:-1}).then(function(categories){
-  	// console.log(categories);
   		res.render('index', { 
   			userInfo: req.userInfo ,
   			categories:categories
