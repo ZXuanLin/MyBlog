@@ -3,7 +3,7 @@ var User = require('../models/User');
 var Category = require('../models/Categories');
 var router = express.Router();
 var responseData = null;
-
+var Cookie = require('cookie-parser');
 router.use(function(req,res,next){
 	responseData = {
 		code:0,
@@ -83,10 +83,13 @@ router.post('/user/login',function(req,res,next){
 			responseData.username = userInfo.username;
 			responseData.message = '登陆成功';
 
-			var loginUserInfo = JSON.stringify({_id:userInfo._id,username:userInfo.username,isAdmin:userInfo.isAdmin})
-			req.cookies.set('userInfo',loginUserInfo)
+			req.cookies.set('userInfo',JSON.stringify({
+				_id:userInfo._id,
+				username:userInfo.username
+			}))
+			
 			res.json(responseData);
-			// console.log(req.cookies);
+			
 			return;
 		}
 	})

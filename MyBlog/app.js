@@ -4,6 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var Cookies = require('cookies');
+var Cookie = require('cookie');
+var User = require('./models/User');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
@@ -14,6 +16,8 @@ mongoose.connect('mongodb://localhost/test',function(err){
 		console.log('连接成功');
 	}
 })
+
+
 //引入引擎模块
 var swig = require('swig');
 //引入自定义路由
@@ -31,30 +35,33 @@ swig.setDefaults({cache:false})
 app.engine('html',swig.renderFile); //1，解析文件的后缀名，2，解析文件名使用的方法
 app.set('views', path.join(__dirname, 'views')); //1，固定参数，2，文件存放的路径
 app.set('view engine', 'html'); //1，固定参数，2，解析文件的后缀名
+app.use(function(req,res,next){
+  req.cookies=new Cookies(req,res);
+  if(req.cookies.get('userInfo')){
+        try {
+            req.userInfo=JSON.parse(req.cookies.get('userInfo'));
+            User.findById(req.userInfo._id).then(function(Info){
+              req.userInfo.isAdmin = Boolean(Info.isAdmin)
+              next();
+            })
+        }catch(e){
+          next();
+        }
+    }else{
+      next();
+    }
+  
+})
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(function(req,res,next){
-  req.cookies = new Cookies(req,res);
-  console.log(req.cookies.get('userInfo'));
-  if(req.cookies.get('userInfo')){
-    try{
-      req.userInfo = JSON.parse(req.cookies.get('userInfo'));
-      User.findById(req.userInfo._id).then(function(userInfo){
-        console.log(userInfo);
-        req.userInfo.isAdmin = Boolean(userInfo.isAdmin);
-        next();
-      })
-    }catch(e){
-      next();
-    }
-  }
-  
-})
+
+
+/**/
 //静态文件
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'lib')));
@@ -62,6 +69,7 @@ app.use(express.static(path.join(__dirname, 'img')));
 
 //设置访问路径
 app.use('/', index);
+/**/
 app.use('/users', users);
 app.use('/admin',admin);
 app.use('/api',api);
@@ -84,5 +92,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
+
 
 module.exports = app;

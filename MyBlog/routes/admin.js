@@ -37,30 +37,21 @@ function renderAdminTable(obj,type,limit,_query){
 	})
 }
 /* 访问根目录的时候，比如这里是localhost:3000/admin */
+router.get('/',function(req,res,next){
+	// res.send('kkkkkkkkkkkkkkkkkkkkk')
+	res.render('admin',{ userInfo: req.userInfo });
+	// next();
+})
 router.use(function(req,res,next){
+	console.log(req.userInfo.isAdmin,'pppppppppp');
 	if(!req.userInfo.isAdmin){
 		res.send('不是管理员');
 		return;
 	}else{
+		console.log('是管理员');
 		next();
 	}
 })
-
-router.get('/',function(req,res,next){
-	res.render('admin',{ userInfo: req.userInfo })
-})
-
-
-renderAdminTable(User,'user',2);
-renderAdminTable(Category,'category',2);
-renderAdminTable(Content,'content',2,['category','user']);
-//分类添加
-router.get('/category/add',function(req,res,next){
-	res.render('category_add',{
-		userInfo:req.userInfo
-	})
-})
-
 
 //分类提交
 router.post('/category/add',function(req,res,next){
@@ -74,6 +65,7 @@ router.post('/category/add',function(req,res,next){
 				operation:'返回上一步'
 			}
 		})
+		
 	}
 
 	Category.findOne({
@@ -105,6 +97,22 @@ router.post('/category/add',function(req,res,next){
 		})
 	})
 })
+
+
+
+renderAdminTable(User,'user',2);
+renderAdminTable(Category,'category',2);
+renderAdminTable(Content,'content',2,['category','user']);
+//分类添加
+router.get('/category/add',function(req,res,next){
+	res.render('category_add',{
+		userInfo:req.userInfo
+	})
+	//next();
+})
+
+
+
 //分类修改
 router.get('/category/edit',function(req,res,next){
 	
@@ -367,33 +375,6 @@ router.get('/content/delete',function(req,res,next){
 
 	// res.send('ok')
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 module.exports = router;

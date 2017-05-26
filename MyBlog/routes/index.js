@@ -6,12 +6,13 @@ var Content=require('../models/Content');
 router.get('/', function(req, res, next) {
 	//第一个参数是文件名，第二个参数是传递到页面的值
   Category.find().sort({_id:-1}).then(function(categories){
-  	console.log(categories);
+  	// console.log(categories);
   		res.render('index', { 
   			userInfo: req.userInfo ,
   			categories:categories
   		});
   })
+  // res.send('ok')
 });
 
 
@@ -53,7 +54,7 @@ router.get('/article',function(req,res,next){
 router.get('/view',function(req,res,next){
 	
     var contentId=req.query.contentid||'';
-    console.log(contentId);
+    // console.log(contentId);
     var data={
         userInfo:req.userInfo,
         categories:[],
@@ -67,7 +68,7 @@ router.get('/view',function(req,res,next){
         data.content=content;
         content.views++;//保存阅读数
         content.save();
-        console.log(data);
+        // console.log(data);
         res.render('article_layout',data);
     })
 });
